@@ -190,6 +190,7 @@ RETURN
 )
 SELECT * FROM getSpecificJenisDosen('JDS001')
 
+DROP FUNCTION dbo.getListDosen
 CREATE FUNCTION dbo.getListDosen
 (
     @nama_dosen VARCHAR(100)
@@ -203,6 +204,7 @@ RETURN
 	JOIN jenis_dosen ON dosen.id_jenis_dosen = jenis_dosen.id_jenis_dosen
 	LEFT JOIN perusahaan_astra ON perusahaan_astra.id_perusahaan = dosen.id_perusahaan
     WHERE nama_dosen LIKE '%' + ISNULL(@nama_dosen, '') + '%'
+	AND status = 'AKTIF'
 )
 SELECT * FROM getListDosen(null)
 
