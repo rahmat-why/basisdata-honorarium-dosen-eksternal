@@ -4,7 +4,7 @@ AFTER INSERT, DELETE
 AS
 BEGIN
     DECLARE @RandomNumber INT
-    SET @RandomNumber = CAST(RAND() * 1000 AS INT)
+    SET @RandomNumber = CAST(RAND() * 1000000 AS INT)
 
     IF EXISTS(SELECT 1 FROM inserted)
     BEGIN

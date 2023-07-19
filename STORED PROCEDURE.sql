@@ -207,24 +207,28 @@ BEGIN
     WHERE id_golongan = @id_golongan;
 END
 
+DROP PROC sp_CreatePerusahaan
 CREATE PROCEDURE sp_CreatePerusahaan
-    @nama_perusahaan VARCHAR(100)
+    @nama_perusahaan VARCHAR(100),
+	@singkatan_perusahaan VARCHAR(10)
 AS
 BEGIN
 	DECLARE @id_perusahaan VARCHAR(10);
 	SET @id_perusahaan = dbo.GeneratePerusahaanID()
 
-    INSERT INTO perusahaan_astra (id_perusahaan, nama_perusahaan)
-    VALUES (@id_perusahaan, @nama_perusahaan)
+    INSERT INTO perusahaan_astra (id_perusahaan, nama_perusahaan, singkatan_perusahaan)
+    VALUES (@id_perusahaan, @nama_perusahaan, @singkatan_perusahaan)
 END
 
 CREATE PROCEDURE sp_UpdatePerusahaan
     @id_perusahaan VARCHAR(10),
-    @nama_perusahaan VARCHAR(100)
+    @nama_perusahaan VARCHAR(100),
+    @singkatan_perusahaan VARCHAR(100)
 AS
 BEGIN
     UPDATE perusahaan_astra
-    SET nama_perusahaan = @nama_perusahaan
+    SET nama_perusahaan = @nama_perusahaan,
+    singkatan_perusahaan = @singkatan_perusahaan
     WHERE id_perusahaan = @id_perusahaan
 END
 
@@ -313,31 +317,6 @@ BEGIN
   WHERE id_dosen = @id_dosen
 END
 
--- FUNCTION INSENTIF GOLONGAN
-CREATE FUNCTION dbo.GetInsentifGolongan (@id_dosen VARCHAR(10))
-RETURNS MONEY
-AS
-BEGIN
-    DECLARE @id_jenis_dosen VARCHAR(10)
-    DECLARE @tanggal_gabung DATE
-    DECLARE @lama_bergabung INT
-	DECLARE @insentif FLOAT
-
-    SELECT 
-        @id_jenis_dosen = jenis_dosen.id_jenis_dosen, 
-        @tanggal_gabung = CASE WHEN jenis_dosen.referensi_dosen = 'INDUSTRI' THEN dosen.tanggal_gabung_industri ELSE dosen.tanggal_gabung_kampus END
-    FROM dosen
-    JOIN jenis_dosen ON dosen.id_jenis_dosen = jenis_dosen.id_jenis_dosen
-    WHERE id_dosen = @id_dosen;
-
-    SET @lama_bergabung = DATEDIFF(DAY, @tanggal_gabung, GETDATE());
-
-	SELECT @insentif = insentif_kehadiran FROM insentif_kehadiran_golongan WHERE
-	@lama_bergabung > tahun_batas_bawah*365 AND @lama_bergabung <= CASE WHEN tahun_batas_atas IS NULL THEN @lama_bergabung ELSE tahun_batas_atas * 365 END
-
-	RETURN @insentif;
-END;
-SELECT dbo.GetInsentifGolongan('DSN006')
 update dosen set npwp = null where id_dosen = 'DSN001'
 
 DROP PROC sp_CalculateHonor
@@ -394,10 +373,6 @@ BEGIN
 	(1-@persentase_pph21_dosen)*100 as persentase_pph21
 END
 
-SELECT nama_dosen, jenis_dosen.* FROM dosen
-JOIN jenis_dosen ON dosen.id_jenis_dosen = jenis_dosen.id_jenis_dosen
-WHERE id_dosen = 'DSN002'
-
 DROP PROC sp_CreateAbsensi
 CREATE PROCEDURE sp_CreateAbsensi
     @id_dosen VARCHAR(10),
@@ -453,3 +428,5 @@ BEGIN
   DELETE FROM absensi
   WHERE id_absensi = @id_absensi;
 END
+
+SELECT * FROM absensi

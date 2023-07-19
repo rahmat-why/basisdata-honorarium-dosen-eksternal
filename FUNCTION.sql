@@ -149,7 +149,7 @@ RETURN
     WHERE nama_prodi LIKE '%' + ISNULL(@nama_prodi, '') + '%'
 )
 SELECT * FROM dbo.getListProdi('Teknologi')
-
+	
 CREATE FUNCTION dbo.getListMatkul
 (
     @nama_matkul VARCHAR(100)
@@ -180,7 +180,7 @@ SELECT * FROM getListJenisDosen(NULL)
 
 CREATE FUNCTION dbo.getSpecificJenisDosen
 (
-    @id_jenis_dosen VARCHAR(100)
+    @id_jenis_dosen VARCHAR(10)
 )
 RETURNS TABLE
 AS
@@ -208,6 +208,19 @@ RETURN
 )
 SELECT * FROM getListDosen(null)
 
+CREATE FUNCTION dbo.getSpecificDosen
+(
+    @id_dosen VARCHAR(10)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT * FROM dosen WHERE id_dosen = @id_dosen
+)
+SELECT * FROM dbo.getSpecificDosen('DSN001')
+
+DROP FUNCTION dbo.getListAbsensi
 CREATE FUNCTION dbo.getListAbsensi
 (
     @start_date DATE,
@@ -220,20 +233,24 @@ AS
 RETURN
 (
 	SELECT absensi.id_absensi, dosen.nama_dosen, matkul.nama_matkul, prodi.nama_prodi, absensi.kelas, 
-		   absensi.tanggal_mengajar, absensi.sks, absensi.kompensasi_mengajar, absensi.insentif_kehadiran, 
-		   absensi.transport_mengajar, absensi.pph21, absensi.persentase_pph21
+	       absensi.tanggal_mengajar, absensi.sks, absensi.kompensasi_mengajar, absensi.insentif_kehadiran, 
+	       absensi.transport_mengajar, absensi.pph21, absensi.persentase_pph21
 	FROM absensi
-	INNER JOIN dosen ON dosen.id_dosen = absensi.id_dosen AND dosen.id_jenis_dosen = @id_jenis_dosen
+	INNER JOIN dosen ON dosen.id_dosen = absensi.id_dosen
 	INNER JOIN matkul ON matkul.id_matkul = absensi.id_matkul
 	INNER JOIN prodi ON prodi.id_prodi = absensi.id_prodi
 	INNER JOIN users ON users.id_user = absensi.id_user
-	WHERE absensi.tanggal_mengajar BETWEEN @start_date AND @end_date
-	AND (dosen.nama_dosen LIKE '%' + ISNULL(@filter, '') + '%'
-		OR matkul.nama_matkul LIKE '%' + ISNULL(@filter, '') + '%'
-		OR prodi.nama_prodi LIKE '%' + ISNULL(@filter, '') + '%'
-		OR absensi.kelas LIKE '%' + ISNULL(@filter, '') + '%')
+	WHERE
+		(@start_date = '' OR @end_date = '' OR @id_jenis_dosen = '')
+		OR
+		(absensi.tanggal_mengajar BETWEEN @start_date AND @end_date AND dosen.id_jenis_dosen = @id_jenis_dosen
+		AND (dosen.nama_dosen LIKE '%' + ISNULL(@filter, '') + '%'
+			OR matkul.nama_matkul LIKE '%' + ISNULL(@filter, '') + '%'
+			OR prodi.nama_prodi LIKE '%' + ISNULL(@filter, '') + '%'
+			OR absensi.kelas LIKE '%' + ISNULL(@filter, '') + '%'))
 )
 SELECT * FROM dbo.getListAbsensi('2023-06-16', '2023-07-15', 'JDS003', NULL)
+SELECT * FROM dbo.getListAbsensi('', '', '', NULL)
 
 DROP FUNCTION dbo.getListAbsensi2
 CREATE FUNCTION dbo.getListAbsensi2
@@ -460,7 +477,18 @@ RETURN
     FROM perusahaan_astra
     WHERE nama_perusahaan LIKE '%' + ISNULL(@nama_perusahaan, '') + '%'
 )
-SELECT * FROM getListPerusahaan(null)
+
+CREATE FUNCTION dbo.getListPerusahaan2
+(
+    @nama_perusahaan VARCHAR(100)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT * FROM getListPerusahaan(@nama_perusahaan)
+)
+SELECT * FROM dbo.getListPerusahaan2(null)
 
 -- Fungsi untuk menghasilkan ID dosen yang unik dan berurutan
 CREATE FUNCTION GenerateDosenID()
@@ -550,3 +578,30 @@ BEGIN
 
   RETURN @absensi_id
 END
+
+-- FUNCTION INSENTIF GOLONGAN
+CREATE FUNCTION dbo.GetInsentifGolongan (@id_dosen VARCHAR(10))
+RETURNS MONEY
+AS
+BEGIN
+    DECLARE @id_jenis_dosen VARCHAR(10)
+    DECLARE @tanggal_gabung DATE
+    DECLARE @lama_bergabung INT
+	DECLARE @insentif FLOAT
+
+    SELECT 
+        @id_jenis_dosen = jenis_dosen.id_jenis_dosen, 
+        @tanggal_gabung = CASE WHEN jenis_dosen.referensi_dosen = 'INDUSTRI' THEN dosen.tanggal_gabung_industri ELSE dosen.tanggal_gabung_kampus END
+    FROM dosen
+    JOIN jenis_dosen ON dosen.id_jenis_dosen = jenis_dosen.id_jenis_dosen
+    WHERE id_dosen = @id_dosen;
+
+    SET @lama_bergabung = DATEDIFF(DAY, @tanggal_gabung, GETDATE());
+	IF @lama_bergabung = 0
+		SET @lama_bergabung = 1; -- sebab jika hari pertama (masih 0 lama bergabungnya) akan error
+
+	SELECT @insentif = insentif_kehadiran FROM insentif_kehadiran_golongan WHERE
+	@lama_bergabung > tahun_batas_bawah*365 AND @lama_bergabung <= CASE WHEN tahun_batas_atas IS NULL OR tahun_batas_atas = 0 THEN @lama_bergabung ELSE tahun_batas_atas * 365 END
+
+	RETURN @insentif;
+END;

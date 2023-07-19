@@ -45,7 +45,8 @@ CREATE TABLE insentif_kehadiran_golongan (
 
 CREATE TABLE perusahaan_astra (
   id_perusahaan VARCHAR(10) PRIMARY KEY,
-  nama_perusahaan VARCHAR(100)
+  nama_perusahaan VARCHAR(100),
+  singkatan_perusahaan VARCHAR(10) UNIQUE
 );
 
 CREATE TABLE dosen (

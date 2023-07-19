@@ -578,7 +578,7 @@ EXEC sp_CreateDosen
 	@nama_bank = 'BCA',
 	@cabang_bank = 'Cikarang',
 	@no_rekening = '0320220104',
-	@npwp = NULL,
+	@npwp = '123456789',
 	@tanggal_gabung_kampus = '2018-07-04',
 	@tanggal_gabung_industri = NULL,
 	@status = 'AKTIF',
@@ -587,6 +587,8 @@ EXEC sp_CreateDosen
 	@id_perusahaan = 'PRS001',
 	@foto_dosen = NULL
 GO
+DELETE FROM absensi WHERE id_absensi = 'ABS056'
+
 EXEC sp_CreateDosen 
 	@nama_dosen = 'Deasy Thresia', 
 	@email = 'deasy@gmail.com',
@@ -803,91 +805,89 @@ GO
 EXEC sp_CreateMatkul @nama_matkul = 'Bahasa Inggris Teknik 2', @sks = 2
 
 SELECT * FROM perusahaan_astra
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'UMUM'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'UMUM', @singkatan_perusahaan = 'UMUM'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Otoparts Tbk'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Otoparts Tbk', @singkatan_perusahaan = 'AOP'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Digital Internasional'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Digital Internasional', @singkatan_perusahaan = 'ADI'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Arya Kharisma'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Arya Kharisma', @singkatan_perusahaan = 'AK'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Autoprima'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Autoprima', @singkatan_perusahaan = 'AAP'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Auto Trust'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Auto Trust', @singkatan_perusahaan = 'AAT'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Multi Trucks Indonesia'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Multi Trucks Indonesia', @singkatan_perusahaan = 'AMTI'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Fuji Technica Indonesia'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Fuji Technica Indonesia', @singkatan_perusahaan = 'FTI'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Gaya Motor'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Gaya Motor', @singkatan_perusahaan = 'GM'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Inti Pantja Press Industri'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Inti Pantja Press Industri', @singkatan_perusahaan = 'IPPI'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Pulogadung Pawitra Laksana'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Pulogadung Pawitra Laksana', @singkatan_perusahaan = 'PPL'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Tjahja Sakti Motor'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Tjahja Sakti Motor', @singkatan_perusahaan = 'TSM'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Federal International Finance'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Federal International Finance', @singkatan_perusahaan = 'FIF'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Asuransi Jiwa Astra'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Asuransi Jiwa Astra', @singkatan_perusahaan = 'AJA'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Mitra Ventura'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Mitra Ventura', @singkatan_perusahaan = 'AMV'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Multi Finance'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Multi Finance', @singkatan_perusahaan = 'AMF'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Sedaya Finance'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Sedaya Finance', @singkatan_perusahaan = 'ASF'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Asuransi Astra Buana'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Asuransi Astra Buana', @singkatan_perusahaan = 'AAB'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Cipta Sedaya Digital Indonesia'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Cipta Sedaya Digital Indonesia', @singkatan_perusahaan = 'CSDI'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Garda Era Sedaya'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Garda Era Sedaya', @singkatan_perusahaan = 'GES'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Matra Graha Sarana'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Matra Graha Sarana', @singkatan_perusahaan = 'MGS'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Sedaya Multi Investama'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Sedaya Multi Investama', @singkatan_perusahaan = 'SMI'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Sedaya Pratama'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Sedaya Pratama', @singkatan_perusahaan = 'SP'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Sharia Multifinance Astra'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Sharia Multifinance Astra', @singkatan_perusahaan = 'SMA'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Swadharma Bhakti Sedaya Finance'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Swadharma Bhakti Sedaya Finance', @singkatan_perusahaan = 'SBSF'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT United Tractors Tbk'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT United Tractors Tbk', @singkatan_perusahaan = 'UT'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Agro Lestari Tbk'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Agro Lestari Tbk', @singkatan_perusahaan = 'AAL'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Tol Nusantara'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Tol Nusantara', @singkatan_perusahaan = 'ATN'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Tol Nusantara'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Serasi Autoraya', @singkatan_perusahaan = 'SA'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Serasi Autoraya'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Graphia Tbk', @singkatan_perusahaan = 'ASGR'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Graphia Tbk'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Menara Astra', @singkatan_perusahaan = 'MA'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Menara Astra'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Brahmayasa Bahtera', @singkatan_perusahaan = 'BB'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Brahmayasa Bahtera'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Samadista Karya', @singkatan_perusahaan = 'SK'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Samadista Karya'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Toyota-Astra Motor', @singkatan_perusahaan = 'TAM'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Toyota-Astra Motor'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Daihatsu Motor', @singkatan_perusahaan = 'ADM'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Daihatsu Motor'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Isuzu Astra Motor Indonesia', @singkatan_perusahaan = 'IAMI'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Isuzu Astra Motor Indonesia'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT UD Astra Motor Indonesia', @singkatan_perusahaan = 'AMI'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT UD Astra Motor Indonesia'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Traktor Nusantara', @singkatan_perusahaan = 'TN'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Traktor Nusantara'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Honda Motor', @singkatan_perusahaan = 'AHM'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Astra Honda Motor'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Toyota Astra Financial Services', @singkatan_perusahaan = 'TAFS'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Toyota Astra Financial Services'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Komatsu Astra Finance', @singkatan_perusahaan = 'KAF'
 GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Komatsu Astra Finance'
-GO
-EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Bank Jasa Jakarta'
+EXEC sp_CreatePerusahaan @nama_perusahaan = 'PT Bank Jasa Jakarta', @singkatan_perusahaan = 'BJJ'
 GO
 
 SELECT * FROM prodi
@@ -914,3 +914,4 @@ SELECT * FROM users
 EXEC sp_CreateUser @nama = 'Fikri', @username = 'fikri', @password = 'fikri', @role = 'DAAA'
 GO
 EXEC sp_CreateUser @nama = 'Rahmat', @username = 'rahmat', @password = 'rahmat', @role = 'ADMIN'
+SELECT * FROM users
